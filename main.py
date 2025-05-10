@@ -36,11 +36,14 @@ async def scrape_body(item: ScrapeItem): # Use the Pydantic model for request bo
         raise HTTPException(status_code=404, detail="No body tag found in the webpage")
         
     # Collect strings from the body
-    body_strings = [string for string in tag.strings]
+    body_strings = [string for string in tag.strings if string.strip()]
+    
+    # Join the list of strings into a single string
+    full_body_text = " ".join(body_strings)
         
     return {
         "success": True,
-        "data": body_strings
+        "data": full_body_text
     }
    
 
