@@ -21,7 +21,7 @@ async def scrape_body(item: ScrapeItem): # Use the Pydantic model for request bo
     """
     try:
         # getting response object
-        res = requests.get(str(item.url)) # Convert HttpUrl to string for requests
+        res = requests.get(str(item.url), allow_redirects=True) # Allow redirects to handle 301 responses
         res.raise_for_status() # Raise an exception for HTTP errors (4xx or 5xx)
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Error fetching URL: {e}")
@@ -55,7 +55,7 @@ async def scrape_links(item: ScrapeItem): # Use the Pydantic model for request b
     """
     try:
         # Convert HttpUrl to string for requests
-        res = requests.get(str(item.url)) 
+        res = requests.get(str(item.url), allow_redirects=True) # Allow redirects to handle 301 responses
         res.raise_for_status() # Raise an exception for HTTP errors (4xx or 5xx)
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Error fetching URL: {e}")
